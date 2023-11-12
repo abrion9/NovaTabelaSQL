@@ -1,0 +1,31 @@
+-- Criação do banco de dados
+CREATE DATABASE MeuBancoDeDados;
+
+-- Utilização do banco de dados
+USE MeuBancoDeDados;
+
+-- Criação da tabela "Produtos"
+CREATE TABLE Produtos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    preco DECIMAL(10, 2),
+    quantidade INT
+);
+
+-- Criação do gatilho
+DELIMITER //
+
+CREATE TRIGGER imprimir_produto
+AFTER INSERT ON Produtos
+FOR EACH ROW
+BEGIN
+    DECLARE produto_id INT;
+    DECLARE produto_nome VARCHAR(100);
+    
+    SET produto_id = NEW.id;
+    SET produto_nome = NEW.nome;
+    
+    SELECT CONCAT('Novo produto inserido. ID: ', produto_id, ', Nome: ', produto_nome) AS mensagem;
+END //
+
+DELIMITER ;
